@@ -15,29 +15,29 @@ export const options = {
         rate: 1500, // number of constant iterations given `timeUnit`
         timeUnit: '10s',
       },
-      // stress: {
-      //   executor: "ramping-arrival-rate",
-      //   preAllocatedVUs: 250,
-      //   timeUnit: "10s",
-      //   startRate: 50,
-      //   stages: [
-      //     { duration: "1m", target: 25 }, // below normal load
-      //     { duration: "2m", target: 350 },
-      //     { duration: "2m", target: 750 }, // normal load
-      //     { duration: "2m", target: 1500 },
-      //     { duration: "2m", target: 2000 }, // around the breaking point
-      //     { duration: "2m", target: 450 },
-      //     { duration: "2m", target: 250 }, // beyond the breaking point
-      //     { duration: "1m", target: 0 }, // scale down. Recovery stage.
-      //   ],
-      // },
-      // soak: {
-      //   stages: [
-      //       { duration: '2m', target: 200 },
-      //       { duration: '56m', target: 200 },
-      //       { duration: '2m', target: 0 },
-      //     ],
-      // }
+      stress: {
+        executor: "ramping-arrival-rate",
+        preAllocatedVUs: 250,
+        timeUnit: "10s",
+        startRate: 50,
+        stages: [
+          { duration: "1m", target: 25 }, // below normal load
+          { duration: "2m", target: 350 },
+          { duration: "2m", target: 750 }, // normal load
+          { duration: "2m", target: 1500 },
+          { duration: "2m", target: 2000 }, // around the breaking point
+          { duration: "2m", target: 450 },
+          { duration: "2m", target: 250 }, // beyond the breaking point
+          { duration: "1m", target: 0 }, // scale down. Recovery stage.
+        ],
+      },
+      soak: {
+        stages: [
+            { duration: '2m', target: 200 },
+            { duration: '56m', target: 200 },
+            { duration: '2m', target: 0 },
+          ],
+      }
     },
 };
 
