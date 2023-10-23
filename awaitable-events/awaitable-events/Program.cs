@@ -10,4 +10,9 @@ app.MapPost("/connect/{id}", async (string id, ConnectionService connectionServi
     await connectionService.ConnectAsync(id, cancellationToken);
 });
 
+app.MapPost("/v2/connect/{id}", async (string id, ConnectionService connectionService, CancellationToken cancellationToken) =>
+{
+    await connectionService.ConnectAsyncV2(id, cancellationToken);
+});
+
 app.Run();
