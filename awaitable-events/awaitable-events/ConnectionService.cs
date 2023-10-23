@@ -27,16 +27,30 @@ namespace awaitable_events
     public class ConnectionService
     {
         private ConcurrentDictionary<string, Connection> _connections = new ConcurrentDictionary<string, Connection>(StringComparer.OrdinalIgnoreCase);
-        private static readonly Random R = new Random();
+        private static readonly Random R = new ();
 
         public async Task ConnectAsync(string id, CancellationToken cancellationToken)
         {
             var connection = new Connection();
             ConfigureConnection(connection);
             _connections.TryAdd(id, connection);
-            RaiseAsync(id);
-            await AsyncEx.WaitEvent(handler => connection.Connected += handler, handler => connection.Connected -= handler, cancellationToken)
+            var task = AsyncEx.WaitEvent(handler => connection.Connected += handler, handler => connection.Connected -= handler, cancellationToken)
                 .ConfigureAwait(false);
+            RaiseAsync(id);
+            await task;
+        }
+
+        public async Task ConnectAsyncV2(string id, CancellationToken cancellationToken)
+        {
+            var connection = new Connection();
+            ConfigureConnection(connection);
+            _connections.TryAdd(id, connection);
+
+            var eventAwaiter = new EventAwaiter();
+            connection.Connected += eventAwaiter.EventRaised;
+            RaiseAsync(id);
+            await eventAwaiter;
+            connection.Connected -= eventAwaiter.EventRaised;
         }
 
         private async Task RaiseAsync(string id)
